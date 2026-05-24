@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: windows-latest  # Pidetään Windows-ympäristö samana kuin livenä
+    runs-on: windows-latest # Pidetään Windows-ympäristö samana kuin livenä
 
     steps:
       - uses: actions/checkout@v4
@@ -25,6 +25,6 @@ jobs:
 
       - name: Run Tests with Verified Path
         env:
-          PYTHONPATH: .  # Opettaa pilvelle, mistä 'core' ja 'adapters' löytyvät
+          PYTHONPATH: . # Opettaa pilvelle, mistä 'core' ja 'adapters' löytyvät
         run: |
           pytest tests/ --maxfail=1 -v

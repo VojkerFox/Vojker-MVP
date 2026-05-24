@@ -1,0 +1,7 @@
+jax
+jaxlib
+pytest
+pytest-asyncio
+anyio
+MetaTrader5
+pandas
