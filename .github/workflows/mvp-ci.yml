@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: windows-latest # Koska käytät Windowsia livenä, pidetään CI samana
+    runs-on: windows-latest  # Pidetään Windows-ympäristö samana kuin livenä
 
     steps:
       - uses: actions/checkout@v4
@@ -21,11 +21,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # Koska requirements.txt saattaa olla tyhjä, asennetaan kriittiset suoraan
-          pip install jax jaxlib pytest pytest-asyncio anyio
+          pip install jax jaxlib pytest pytest-asyncio anyio MetaTrader5 pandas
 
       - name: Run Tests with Verified Path
         env:
-          PYTHONPATH: . # Tämä opettaa GitHub Actionsille mistä 'core' löytyy!
+          PYTHONPATH: .  # Opettaa pilvelle, mistä 'core' ja 'adapters' löytyvät
         run: |
           pytest tests/ --maxfail=1 -v
