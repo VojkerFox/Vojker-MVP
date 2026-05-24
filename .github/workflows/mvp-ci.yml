@@ -2,33 +2,30 @@ name: Vojker MVP CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
-    branches: [main]
+    branches: [main, master]
 
 jobs:
   test:
-    runs-on: windows-latest
+    runs-on: windows-latest # Koska käytät Windowsia livenä, pidetään CI samana
 
     steps:
-      - name: Checkout koodi
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Alusta Python 3.13
+      - name: Set up Python 3.13
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
 
-      - name: Asenna riippuvuudet
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # Asennetaan vain välttämättömät (JAX CPU-moodissa)
-          pip install pytest numpy MetaTrader5 jax[cpu]
+          # Koska requirements.txt saattaa olla tyhjä, asennetaan kriittiset suoraan
+          pip install jax jaxlib pytest pytest-asyncio anyio
 
-      - name: Aja MVP Testit
+      - name: Run Tests with Verified Path
         env:
-          JAX_ENABLE_X64: "True"
-          JAX_PLATFORM_NAME: "cpu"
+          PYTHONPATH: . # Tämä opettaa GitHub Actionsille mistä 'core' löytyy!
         run: |
-          # Aja testit ja pysäytä heti jos yksikin failaa
           pytest tests/ --maxfail=1 -v
